@@ -12,9 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+load("@python_versions//3.8:defs.bzl", "compile_pip_requirements")
+
 package(default_visibility = ["//visibility:public"])
 
 exports_files([
     "build_env.py",
     "venv.bzl",
 ])
+
+compile_pip_requirements(
+    name = "requirements",
+    requirements_in = "requirements.in",
+    requirements_txt = "requirements.txt",
+)

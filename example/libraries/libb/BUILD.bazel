@@ -4,4 +4,3 @@ py_library(
     name = "libb",
     srcs = ["libb.py"],
 )
-

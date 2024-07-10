@@ -5,4 +5,3 @@ py_library(
     srcs = ["liba.py"],
     imports = ["."],
 )
-

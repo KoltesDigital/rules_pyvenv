@@ -1,0 +1,3 @@
+# Enable Windows support.
+startup --windows_enable_symlinks
+build --enable_runfiles

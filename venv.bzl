@@ -14,6 +14,7 @@
 
 load("@rules_python//python:defs.bzl", "py_binary")
 load("@rules_python//python:py_info.bzl", "PyInfo")
+load("@rules_pyvenv_pip_deps//:requirements.bzl", "requirement")
 
 PYTHON_TOOLCHAIN_TYPE = "@bazel_tools//tools/python:toolchain_type"
 
@@ -79,7 +80,7 @@ def py_venv(name, deps = None, data = None, extra_pip_commands = None, always_li
         commands = extra_pip_commands,
         always_link = always_link,
         output = out_name,
-        **kwargs,
+        **kwargs
     )
 
     env = {
@@ -92,9 +93,12 @@ def py_venv(name, deps = None, data = None, extra_pip_commands = None, always_li
     py_binary(
         name = name,
         srcs = ["@rules_pyvenv//:build_env.py"],
-        deps = ["@rules_pyvenv//vendor/importlib_metadata"],
+        deps = [
+            requirement("importlib_metadata"),
+            requirement("zipp"),
+        ],
         data = [out_label] + deps + data,
         main = "@rules_pyvenv//:build_env.py",
         env = env,
-        **kwargs,
+        **kwargs
     )

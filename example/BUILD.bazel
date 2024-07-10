@@ -12,25 +12,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-package(default_visibility = ["//visibility:public"])
-
+load("@pip//:requirements.bzl", "data_requirement", "requirement")
+load("@python_versions//3.12:defs.bzl", "compile_pip_requirements")
 load("@rules_pyvenv//:venv.bzl", "py_venv")
-load("@example_deps//:requirements.bzl", "requirement", "data_requirement")
-load("@rules_python//python/pip_install:requirements.bzl", "compile_pip_requirements")
+
+package(default_visibility = ["//visibility:public"])
 
 py_venv(
     name = "venv",
+    data = [
+        data_requirement("black"),
+    ],
+    extra_pip_commands = [
+        # "install ipython jupyter-console",
+    ],
     deps = [
         "//libraries/liba",
         requirement("black"),
         requirement("numpy"),
     ],
-    data = [
-        data_requirement("black"),
-    ],
-    extra_pip_commands = [
-#        "install ipython jupyter-console",
-    ]
 )
 
 py_venv(
@@ -43,11 +43,11 @@ py_venv(
 
 py_venv(
     name = "venv_only_local_always_link",
+    always_link = True,
     deps = [
         "//libraries/liba",
         "//libraries/libb",
     ],
-    always_link = True,
 )
 
 py_venv(
@@ -61,7 +61,7 @@ py_venv(
 
 compile_pip_requirements(
     name = "requirements",
-    extra_args = ["--allow-unsafe"],
     requirements_in = "requirements.in",
     requirements_txt = "requirements.txt",
+    requirements_windows = "requirements_windows.txt",
 )
